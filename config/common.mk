@@ -75,6 +75,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_DEXPREOPT_SPEED_APPS += \
     SystemUI
 
+# Don't compile SystemUITests
+EXCLUDE_SYSTEMUI_TESTS := true
+
 # This is Lineage!
 PRODUCT_COPY_FILES += \
     vendor/rr/config/permissions/privapp-permissions-rr-system.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-rr.xml \
