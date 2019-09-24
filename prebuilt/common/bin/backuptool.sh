@@ -6,9 +6,7 @@
 export C=/tmp/backupdir
 export SYSDEV="$(readlink -nf "$2")"
 export SYSFS="$3"
-export S=$2
-export V=8
-
+export V=10
 export ADDOND_VERSION=1
 
 # Scripts in /system/addon.d expect to find backuptool.functions in /tmp
@@ -84,25 +82,35 @@ determine_system_mount
 case "$1" in
   backup)
     mount_system
+    mkdir -p $C
     if check_prereq; then
-      mkdir -p $C
-      preserve_addon_d
-      run_stage pre-backup
-      run_stage backup
-      run_stage post-backup
+        if check_whitelist system; then
+            unmount_system
+            exit 127
+        fi
     fi
+    check_blacklist system
+    preserve_addon_d
+    run_stage pre-backup
+    run_stage backup
+    run_stage post-backup
     unmount_system
   ;;
   restore)
     mount_system
     if check_prereq; then
-      run_stage pre-restore
-      run_stage restore
-      run_stage post-restore
-      restore_addon_d
-      rm -rf $C
-      sync
+        if check_whitelist tmp; then
+            unmount_system
+            exit 127
+        fi
     fi
+    check_blacklist tmp
+    run_stage pre-restore
+    run_stage restore
+    run_stage post-restore
+    restore_addon_d
+    rm -rf $C
+    sync
     unmount_system
   ;;
   *)
