@@ -89,6 +89,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/rr/config/permissions/rr-hiddenapi-package-whitelist.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/rr-hiddenapi-package-whitelist.xml
 
+# Live display
+PRODUCT_COPY_FILES += \
+    vendor/rr/config/permissions/privapp-permissions-livedisplay.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-livedisplay.xml
+
 # Include AOSP audio files
 include vendor/rr/config/aosp_audio.mk
 
