@@ -1,5 +1,4 @@
-#
-#  Copyright 2018, The Android Open Source Project
+# Copyright (C) 2018-2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,4 +27,3 @@ LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res
 LOCAL_PACKAGE_NAME := PrimaryColorGrayOverlay
 LOCAL_SDK_VERSION := current
 
-include $(BUILD_RRO_PACKAGE)
