@@ -365,7 +365,19 @@ $(KERNEL_ADDITIONAL_CONFIG_OUT): $(KERNEL_OUT)
 
 $(KERNEL_CONFIG): $(KERNEL_DEFCONFIG_SRC) $(KERNEL_ADDITIONAL_CONFIG_OUT)
 	@echo "Building Kernel Config"
-	$(call make-kernel-config,$(KERNEL_OUT),$(KERNEL_DEFCONFIG))
+	$(call make-kernel-target,VARIANT_DEFCONFIG=$(VARIANT_DEFCONFIG) SELINUX_DEFCONFIG=$(SELINUX_DEFCONFIG) $(KERNEL_DEFCONFIG))
+	$(hide) if [ ! -z "$(KERNEL_CONFIG_OVERRIDE)" ]; then \
+			echo "Overriding kernel config with '$(KERNEL_CONFIG_OVERRIDE)'"; \
+			echo $(KERNEL_CONFIG_OVERRIDE) >> $(KERNEL_OUT)/.config; \
+			$(call make-kernel-target,oldconfig); \
+		fi
+	# Create defconfig build artifact
+	$(call make-kernel-target,savedefconfig)
+	$(hide) if [ ! -z "$(KERNEL_ADDITIONAL_CONFIG)" ]; then \
+			echo "Using additional config '$(KERNEL_ADDITIONAL_CONFIG)'"; \
+			$(KERNEL_SRC)/scripts/kconfig/merge_config.sh -m -O $(KERNEL_OUT) $(KERNEL_OUT)/.config $(KERNEL_SRC)/arch/$(KERNEL_ARCH)/configs/$(KERNEL_ADDITIONAL_CONFIG); \
+			$(call make-kernel-target,KCONFIG_ALLCONFIG=$(KERNEL_BUILD_OUT_PREFIX)$(KERNEL_OUT)/.config alldefconfig); \
+		fi
 
 $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_CONFIG) $(DEPMOD) $(DTC)
 	@echo "Building Kernel Image ($(BOARD_KERNEL_IMAGE_NAME))"
