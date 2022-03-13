@@ -193,5 +193,7 @@ DEVICE_PACKAGE_OVERLAYS += vendor/rr/overlay/common
 PRODUCT_EXTRA_RECOVERY_KEYS += \
     vendor/rr/build/target/product/security/rr
 
+include vendor/rr/config/version.mk
+
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/rr/config/partner_gms.mk

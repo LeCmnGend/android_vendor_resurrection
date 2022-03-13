@@ -1,15 +1,8 @@
-
-
 # Build fingerprint
 ifneq ($(BUILD_FINGERPRINT),)
 ADDITIONAL_BUILD_PROPERTIES += \
     ro.build.fingerprint=$(BUILD_FINGERPRINT)
 endif
-
-# RR System Version
-PRODUCT_VERSION = NOV23
-RR_VERSION := RR-Rev-Q-$(PRODUCT_VERSION)-$(PRODUCT_RR_EXTRAVERSION)$(shell date +%Y%m%d)-$(RR_BUILD)
-RR_BUILDTYPE = UNOFFICIAL
 
 # RR System Version
 ADDITIONAL_BUILD_PROPERTIES += \
