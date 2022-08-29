@@ -1,4 +1,23 @@
 include vendor/rr/config/BoardConfigQcomDefs.mk
+# Platform names
+KONA ?= kona #SM8250
+LITO ?= lito #SM7250
+BENGAL ?= bengal #SM6115
+MSMNILE ?= msmnile #SM8150
+MSMSTEPPE ?= sm6150
+TRINKET ?= trinket #SM6125
+ATOLL ?= atoll #SM6250
+
+B_FAMILY := msm8226 msm8610 msm8974
+B64_FAMILY := msm8992 msm8994
+BR_FAMILY := msm8909 msm8916
+UM_3_18_FAMILY := msm8937 msm8953 msm8996
+UM_4_4_FAMILY := msm8998 sdm660
+UM_4_9_FAMILY := sdm845 sdm710
+UM_4_14_FAMILY := $(MSMNILE) $(MSMSTEPPE) $(TRINKET) $(ATOLL)
+UM_4_19_FAMILY := $(KONA) $(LITO) $(BENGAL)
+UM_PLATFORMS := $(UM_3_18_FAMILY) $(UM_4_4_FAMILY) $(UM_4_9_FAMILY) $(UM_4_14_FAMILY) $(UM_4_19_FAMILY)
+QSSI_SUPPORTED_PLATFORMS := $(UM_4_9_FAMILY) $(UM_4_14_FAMILY) $(UM_4_19_FAMILY)
 
 BOARD_USES_ADRENO := true
 
@@ -49,3 +68,8 @@ endif
 # Allow a device to opt-out hardset of PRODUCT_SOONG_NAMESPACES
 QCOM_SOONG_NAMESPACE ?= hardware/qcom-caf/$(QCOM_HARDWARE_VARIANT)
 PRODUCT_SOONG_NAMESPACES += $(QCOM_SOONG_NAMESPACE)
+
+# Add data-ipa-cfg-mgr to PRODUCT_SOONG_NAMESPACES if needed
+ifneq ($(USE_DEVICE_SPECIFIC_DATA_IPA_CFG_MGR),true)
+    PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/data-ipa-cfg-mgr
+endif

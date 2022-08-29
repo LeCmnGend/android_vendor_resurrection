@@ -4,8 +4,6 @@ $(call inherit-product-if-exists, vendor/rr/config/rr.mk)
 
 PRODUCT_BRAND ?= ResurrectionRemix
 
-PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-
 ifeq ($(PRODUCT_GMS_CLIENTID_BASE),)
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.com.google.clientidbase=android-google
@@ -210,3 +208,9 @@ PRODUCT_EXTRA_RECOVERY_KEYS += \
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/rr/config/partner_gms.mk
+
+# Gapps
+ifeq ($(BUILD_WITH_GAPPS), true)
+    WITH_GMS := true
+    $(call inherit-product, vendor/gapps/products/gapps.mk)
+endif

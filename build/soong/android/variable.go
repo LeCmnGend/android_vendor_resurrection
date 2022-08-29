@@ -57,6 +57,9 @@ type Product_variables struct {
 	Target_camera_needs_client_info struct {
 		Cflags []string
 	}
+	Target_uses_prebuilt_dynamic_partitions struct {
+		Cflags []string
+	}
 	Uses_generic_camera_parameter_library struct {
 		Srcs []string
 	}
@@ -125,4 +128,5 @@ type ProductVariables struct {
 	Uses_qcom_um_4_4_family  *bool `json:",omitempty"`
 	Uses_qcom_um_4_9_family  *bool `json:",omitempty"`
 	Uses_qcom_um_4_14_family  *bool `json:",omitempty"`
+	Target_uses_prebuilt_dynamic_partitions  *bool `json:",omitempty"`
 }

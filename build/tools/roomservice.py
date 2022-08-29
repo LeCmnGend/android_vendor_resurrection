@@ -107,6 +107,9 @@ def get_remote(manifest=None, remote_name=None):
         if remote_name == remote.get('name'):
             return remote
 
+def get_revision(manifest=None, p="build"):
+    return custom_default_revision
+
 def get_from_manifest(device_name):
     if os.path.exists(custom_local_manifest):
         man = load_manifest(custom_local_manifest)
@@ -140,9 +143,11 @@ def add_to_manifest(repos, fallback_branch=None):
             repo_path = repo_name.split('/')[-1]
 
         if 'branch' in repo:
-            repo_branch=repo['branch']
+            repo_branch = repo['branch']
+        elif fallback_branch:
+            repo_branch = fallback_branch
         else:
-            repo_branch=custom_default_revision
+            repo_branch = custom_default_revision
 
         if 'remote' in repo:
             repo_remote=repo['remote']
@@ -152,7 +157,7 @@ def add_to_manifest(repos, fallback_branch=None):
             repo_remote="github"
 
         if is_in_manifest(repo_path):
-            print('%s already exists in the manifest', repo_path)
+            print('%s already exists in the manifest' % repo_path)
             continue
 
         print('Adding dependency:\nRepository: %s\nBranch: %s\nRemote: %s\nPath: %s\n' % (repo_name, repo_branch,repo_remote, repo_path))
@@ -203,7 +208,7 @@ def fetch_dependencies(repo_path, fallback_branch=None):
             dependencies = json.load(dep_f)
     else:
         dependencies = {}
-        print('%s has no additional dependencies.' % repo_path)
+        debug('Dependencies file not found, bailing out.')
 
     fetch_list = []
     syncable_repos = []
@@ -211,7 +216,9 @@ def fetch_dependencies(repo_path, fallback_branch=None):
     for dependency in dependencies:
         if not is_in_manifest(dependency['target_path']):
             if not dependency.get('branch'):
-                dependency['branch'] = custom_default_revision
+                dependency['branch'] = (
+                    fallback_branch or get_revision() or custom_default_revision
+                )
 
             fetch_list.append(dependency)
             syncable_repos.append(dependency['target_path'])

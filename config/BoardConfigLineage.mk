@@ -16,3 +16,11 @@ PRODUCT_SOONG_NAMESPACES += \
     frameworks/av/camera/cameraserver \
     frameworks/av/services/camera/libcameraservice
 endif
+
+# Safetynet
+TARGET_FORCE_BUILD_FINGERPRINT := google/redfin/redfin:11/RQ1A.201205.010/6953398:user/release-keys
+
+# Gapps
+ifeq ($(BUILD_WITH_GAPPS), true)
+    include vendor/gapps/products/board.mk
+endif
