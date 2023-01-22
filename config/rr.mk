@@ -79,10 +79,6 @@ PRODUCT_PACKAGES += \
 # Bootanimation
 PRODUCT_COPY_FILES += vendor/rr/prebuilt/common/bootanimation/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
 
-# Copy over the changelog to the device
-PRODUCT_COPY_FILES += \
-    vendor/CHANGELOG.mkdn:system/etc/RR/Changelog.txt
-
 # Copy features.txt from the path
 PRODUCT_COPY_FILES += \
 vendor/rr/Features.mkdn:system/etc/RR/Features.txt
@@ -210,7 +206,7 @@ PRODUCT_PACKAGES += \
     SearchBarAccent \
     SearchBarStockColor \
     SearchBarGradientSystem \
-    SearchBarGradientSystem2 
+    SearchBarGradientSystem2
 
 # Dark Styles
 PRODUCT_PACKAGES += \
