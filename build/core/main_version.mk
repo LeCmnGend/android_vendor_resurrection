@@ -6,13 +6,9 @@ ADDITIONAL_BUILD_PROPERTIES += \
 endif
 
 # RR System Version
-PRODUCT_VERSION = 8.7.14
-ifneq ($(RR_BUILDTYPE),)
-RR_VERSION := RROS-Q-$(PRODUCT_VERSION)-$(shell date +%Y%m%d)-$(RR_BUILD)-$(RR_BUILDTYPE)
-else
-RR_VERSION := RROS-Q-$(PRODUCT_VERSION)-$(shell date +%Y%m%d)-$(RR_BUILD)-Unofficial
-RR_BUILDTYPE=Unofficial
-endif
+PRODUCT_VERSION = NOV22
+RR_VERSION := RR-Rev-Q-$(PRODUCT_VERSION)-$(shell date +%Y%m%d)-$(RR_BUILD)
+RR_BUILDTYPE = UNOFFICIAL
 
 # RR System Version
 ADDITIONAL_BUILD_PROPERTIES += \
