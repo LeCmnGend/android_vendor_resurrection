@@ -76,7 +76,7 @@ else
 			esac
 			encoded+="${o}"
 		done
-		echo "${encoded}"    # You can either set a return variable (FASTER) 
+		echo "${encoded}"    # You can either set a return variable (FASTER)
 		REPLY="${encoded}"   #+or echo the result (EASIER)... or both... :p
 	}
 

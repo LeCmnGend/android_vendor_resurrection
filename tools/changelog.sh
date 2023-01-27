@@ -38,23 +38,12 @@ if [ -f $Changelog ];
  then
  	rm -f $Changelog
 fi
- 
+
 touch $Changelog
 
-if [ -z $days_to_log ];then
-# ask for days and version if not already specified
-echo ""
-echo ${ylw}" ▼ For how many days changelog do you want to generate?"${txtrst}
-echo ""
-echo -e ${blu}" 〉 30/sec Time-out"${txtrst}${red}" ︱ 7 Days by default"${txtrst}
-echo -e "";
-echo -e ${cya}" ▼ Type a number"${txtrst}
-echo -e "";
-# use 'export days_to_log=5' before '. build/envsetup.sh' were 5 is days to log
-read -r -t 30 days_to_log || days_to_log=7
-fi
+days_to_log=7
 echo >> $Changelog;
-echo "$source_name Ver 8.7.3 Changelog"    >> $Changelog;
+echo "$source_name Changelog"    >> $Changelog;
 echo '' >> $Changelog;
 echo >> $Changelog;
 
