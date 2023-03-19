@@ -8,7 +8,7 @@ endif
 
 # RR System Version
 PRODUCT_VERSION = FEB23
-RR_VERSION := RR-Rev-Q-$(PRODUCT_VERSION)-$(shell date +%Y%m%d)-$(RR_BUILD)
+RR_VERSION := RR-Rev-Q-$(PRODUCT_VERSION)-$(PRODUCT_RR_EXTRAVERSION)$(shell date +%Y%m%d)-$(RR_BUILD)
 RR_BUILDTYPE = UNOFFICIAL
 
 # RR System Version
