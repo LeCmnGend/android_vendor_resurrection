@@ -221,7 +221,7 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,vendor/rr/prebuilt/system/fonts,$(TARGET_COPY_OUT_SYSTEM)/fonts)
 
 # Face Unlock
-TARGET_FACE_UNLOCK_SUPPORTED := false
+TARGET_FACE_UNLOCK_SUPPORTED ?= true
 ifneq ($(TARGET_DISABLE_ALTERNATIVE_FACE_UNLOCK), true)
 PRODUCT_PACKAGES += \
     FaceUnlockService
