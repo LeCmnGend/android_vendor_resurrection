@@ -7,14 +7,17 @@ ifeq ($(GAPPS),false)
 else ifeq ($(GAPPS),true)
     $(GAPPS will be included in the build)
     PRODUCT_RR_EXTRAVERSION = GAPPS-
-    ifeq ($(GAPPS_ARM32),)
-        $(warning GAPPS_ARM32 is not set, it defaulting to 64 bit)
-        $(warning Dont try to set it, only needed for 32 bit devices)
+    ifeq ($(TARGET_ARCH), arm64)
+        $(warning including 64 bit gapps)
         $(call inherit-product, vendor/gapps/arm64/arm64-vendor.mk)
     endif
-    ifeq ($(GAPPS_ARM32), true)
+    ifeq ($(TARGET_ARCH), arm)
         $(warning including 32 bit gapps)
         $(call inherit-product, vendor/gapps/arm/arm-vendor.mk)
+    endif
+    ifeq ($(TARGET_ARCH),)
+        $(warning TARGET_ARCH undefined, assuming 64 bit)
+        $(call inherit-product, vendor/gapps/arm64/arm64-vendor.mk)
     endif
 endif
 
