@@ -219,6 +219,7 @@ else
 endif
 
 ifeq ($(or $(FULL_RECOVERY_KERNEL_BUILD), $(FULL_KERNEL_BUILD)),true)
+
 # Add host bin out dir to path
 PATH_OVERRIDE := PATH=$(KERNEL_BUILD_OUT_PREFIX)$(HOST_OUT_EXECUTABLES):$$PATH
 ifeq ($(TARGET_KERNEL_CLANG_COMPILE),true)
@@ -228,7 +229,7 @@ ifeq ($(TARGET_KERNEL_CLANG_COMPILE),true)
         # Use the default version of clang if TARGET_KERNEL_CLANG_VERSION hasn't been set by the device config
         KERNEL_CLANG_VERSION := $(LLVM_PREBUILTS_VERSION)
     endif
-    TARGET_KERNEL_CLANG_PATH ?= $(BUILD_TOP)/prebuilts/clang/host/$(HOST_OS)-x86/$(KERNEL_CLANG_VERSION)
+    TARGET_KERNEL_CLANG_PATH ?= $(BUILD_TOP)/prebuilts/clang/host/$(HOST_PREBUILT_TAG)/$(KERNEL_CLANG_VERSION)
     ifeq ($(KERNEL_ARCH),arm64)
         KERNEL_CLANG_TRIPLE ?= CLANG_TRIPLE=aarch64-linux-gnu-
     else ifeq ($(KERNEL_ARCH),arm)
@@ -250,6 +251,8 @@ ifeq ($(TARGET_KERNEL_CLANG_COMPILE),true)
         KERNEL_CC += OBJDUMP=llvm-objdump
         KERNEL_CC += STRIP=llvm-strip
     endif
+    # ThinLTO cache path for kernel
+    KERNEL_CC += KERNEL_THINLTO_CACHE_PATH="$(BUILD_TOP)/$(TARGET_OUT_INTERMEDIATES)/KERNEL_THINLTO-CACHE"
 endif
 
 ifneq ($(TARGET_KERNEL_MODULES),)
@@ -390,19 +393,7 @@ $(KERNEL_ADDITIONAL_CONFIG_OUT): $(KERNEL_OUT)
 
 $(KERNEL_CONFIG): $(KERNEL_DEFCONFIG_SRC) $(KERNEL_ADDITIONAL_CONFIG_OUT)
 	@echo "Building Kernel Config"
-	$(call make-kernel-target,VARIANT_DEFCONFIG=$(VARIANT_DEFCONFIG) SELINUX_DEFCONFIG=$(SELINUX_DEFCONFIG) $(KERNEL_DEFCONFIG))
-	$(hide) if [ ! -z "$(KERNEL_CONFIG_OVERRIDE)" ]; then \
-			echo "Overriding kernel config with '$(KERNEL_CONFIG_OVERRIDE)'"; \
-			echo $(KERNEL_CONFIG_OVERRIDE) >> $(KERNEL_OUT)/.config; \
-			$(call make-kernel-target,oldconfig); \
-		fi
-	# Create defconfig build artifact
-	$(call make-kernel-target,savedefconfig)
-	$(hide) if [ ! -z "$(KERNEL_ADDITIONAL_CONFIG)" ]; then \
-			echo "Using additional config '$(KERNEL_ADDITIONAL_CONFIG)'"; \
-			$(KERNEL_SRC)/scripts/kconfig/merge_config.sh -m -O $(KERNEL_OUT) $(KERNEL_OUT)/.config $(KERNEL_SRC)/arch/$(KERNEL_ARCH)/configs/$(KERNEL_ADDITIONAL_CONFIG); \
-			$(call make-kernel-target,KCONFIG_ALLCONFIG=$(KERNEL_BUILD_OUT_PREFIX)$(KERNEL_OUT)/.config alldefconfig); \
-		fi
+	$(call make-kernel-config,$(KERNEL_OUT),$(KERNEL_DEFCONFIG))
 
 $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_CONFIG) $(DEPMOD) $(DTC)
 	@echo "Building Kernel Image ($(BOARD_KERNEL_IMAGE_NAME))"

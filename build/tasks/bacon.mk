@@ -17,6 +17,8 @@
 # -----------------------------------------------------------------
 # Resurrection Remix OTA update package
 
+MD5 := prebuilts/build-tools/path/$(HOST_PREBUILT_TAG)/md5sum
+
 RR_TARGET_PACKAGE := $(PRODUCT_OUT)/$(RR_VERSION).zip
 
 .PHONY: bacon
